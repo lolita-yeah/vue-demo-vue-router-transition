@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Vue-router切换效果---类似App中的轮播图切换 </title>
+	<script src="node_modules/vue/dist/vue.min.js"></script>
+	<script src="node_modules/vue-router/dist/vue-router.min.js"></script>
+</head>
+<body>
+	<div id="app">
+		<!-- <router-view transition="outLeftInRight">
+		</router-view> -->
+		<!-- 2. 各个视图使用各自的切换效果 -->
+		<router-view></router-view>
+	</div>
+	<script>
+		/* 1. 所有视图统一切换效果示例
+		var Main = Vue.extend({
+			template : '<div class="header">MainView<a v-link="{path:\'/search\'}" class="right link">搜索</a></div>'
+		});
+		var Search = Vue.extend({
+			template : '<div class="header"><a v-link="{path:\'/\'}" class="left link"> < </a>SearchView</div>'
+		});*/
+		var Main = Vue.extend({
+			template : '<div class="header" transition="fadeOutLeft">MainView<a v-link="{path:\'/search\'}" class="right link">搜索</a></div>'
+		});
+		var Search = Vue.extend({
+			template : '<div class="header" transition="fadeInLeft"><a v-link="{path:\'/\'}" class="left link"> < </a>SearchView</div>'
+		});
+		var App =  Vue.extend({});
+		var router = new VueRouter();
+
+		router.map({
+			'/' : {
+				component : Main
+			} ,
+			'/search' : {
+				component : Search
+			}
+		});
+
+		router.start(App, "#app");
+	</script>
+
+	<style>
+		body{
+			margin: 0;
+		}
+		a{
+			text-decoration: none;
+		}
+		.header{
+			position: fixed;
+			top: 0;
+			left: 0;
+			height: 56px;
+			width: 100%;
+			box-sizing: border-box;
+			padding: 8px 4px;
+			line-height: 40px;
+			text-align: center;
+			color: #fff;
+			background-color: #03A9F4;
+		}
+		.header .link{
+			position: absolute;
+			top: 8px;
+			color: #fff; 
+		}
+		.header .right{
+			right: 10px;
+		}
+		.header .left{
+			left: 10px;
+		}
+		
+		/*Vue transition*/
+		.outLeftInRight-transition,
+		.fadeOutLeft-transition, 
+		.fadeInLeft-transition {
+		  transition: transform .3s ease-in-out;
+		}
+
+		/*进入时的状态，从右开始*/
+		.outLeftInRight-enter,
+		.fadeInLeft-enter,
+		.fadeInLeft-leave{
+			transform: translateX(100%);
+		}
+		/*离开时的状态，从左开始*/
+		.outLeftInRight-leave,
+		.fadeOutLeft-enter,
+		.fadeOutLeft-leave{
+			transform: translateX(-100%);
+		}
+	</style>
+</body>
+</html>
